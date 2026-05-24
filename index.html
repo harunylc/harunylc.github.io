@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ahmet Harun Yalçındağ — Game Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0C0C10;
+  --surface:   #13131A;
+  --surface2:  #1A1A24;
+  --border:    rgba(255,255,255,0.07);
+  --indigo:    #6366F1;
+  --indigo-glow: rgba(99,102,241,0.18);
+  --indigo-lt: #818CF8;
+  --white:     #F4F4F8;
+  --muted:     #8B8B9E;
+  --accent:    #A5B4FC;
+  --tag-bg:    rgba(99,102,241,0.12);
+  --radius:    10px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(99,102,241,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 18px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: rgba(12,12,16,0.85);
+  backdrop-filter: blur(14px);
+}
+
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--white); }
+
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 48px 80px;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hero-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards 0.1s;
+}
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 10vw, 9rem);
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.25s;
+}
+
+.hero h1 em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-sub {
+  margin-top: 28px;
+  max-width: 520px;
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.7;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.4s;
+}
+
+.hero-cta {
+  margin-top: 36px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.55s;
+}
+
+.btn-primary {
+  background: var(--indigo);
+  color: var(--white);
+  padding: 11px 26px;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  transition: background .2s, transform .15s;
+}
+.btn-primary:hover { background: var(--indigo-lt); transform: translateY(-1px); }
+
+.btn-ghost {
+  color: var(--muted);
+  font-size: 0.84rem;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  transition: color .2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-ghost:hover { color: var(--white); }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 36px; left: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+.scroll-line { width: 40px; height: 1px; background: var(--muted); }
+
+section {
+  position: relative;
+  z-index: 1;
+  padding: 90px 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.section-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  color: var(--indigo);
+  letter-spacing: 0.1em;
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  letter-spacing: 0.05em;
+  color: var(--white);
+}
+
+.section-line { flex: 1; height: 1px; background: var(--border); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.about-text p {
+  font-size: 1rem;
+  color: #C4C4D4;
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+.about-text p strong { color: var(--white); font-weight: 600; }
+
+.about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  transition: border-color .2s;
+}
+.stat-card:hover { border-color: rgba(99,102,241,0.35); }
+
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  color: var(--indigo-lt);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label { font-size: 0.75rem; color: var(--muted); font-weight: 500; letter-spacing: 0.04em; }
+
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.skill-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color .25s, transform .2s;
+}
+.skill-card:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-3px); }
+
+.skill-card-icon { font-size: 1.4rem; margin-bottom: 12px; }
+
+.skill-card h3 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--indigo-lt);
+  margin-bottom: 14px;
+}
+
+.skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.skill-tag {
+  background: var(--tag-bg);
+  color: var(--accent);
+  font-size: 0.73rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.skill-tag.dim { background: rgba(255,255,255,0.05); color: var(--muted); }
+
+.projects-list { display: flex; flex-direction: column; gap: 24px; }
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 36px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  transition: border-color .25s, transform .2s;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+.project-card:hover { border-color: rgba(99,102,241,0.45); transform: translateY(-2px); }
+
+.project-card.wip-card { border-color: rgba(251,191,36,0.2); }
+.project-card.wip-card:hover { border-color: rgba(251,191,36,0.45); }
+
+.wip-badge {
+  position: absolute;
+  top: 16px; right: 16px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #F59E0B;
+  background: rgba(245,158,11,0.12);
+  padding: 3px 9px;
+  border-radius: 3px;
+  border: 1px solid rgba(245,158,11,0.25);
+}
+
+.project-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
+
+.project-card-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.45rem;
+  color: var(--white);
+  font-style: italic;
+}
+
+.project-card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+
+.ptag {
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 3px;
+}
+.ptag-engine   { background: rgba(99,102,241,0.15);  color: #A5B4FC; }
+.ptag-platform { background: rgba(16,185,129,0.12);  color: #6EE7B7; }
+.ptag-jam      { background: rgba(168,85,247,0.12);  color: #D8B4FE; }
+.ptag-type     { background: rgba(245,158,11,0.12);  color: #FCD34D; }
+.ptag-tech     { background: rgba(239,68,68,0.12);   color: #FCA5A5; }
+
+.project-card-desc { font-size: 0.88rem; color: #A0A0B8; line-height: 1.75; font-weight: 300; }
+.project-card-desc strong { color: var(--white); font-weight: 600; }
+.project-card-meta { font-size: 0.72rem; color: var(--muted); margin-top: 14px; font-weight: 500; }
+
+.project-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-width: 120px;
+}
+
+.project-card-team { text-align: right; }
+.team-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--indigo-lt); line-height: 1; }
+.team-label { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.project-arrow {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  transition: all .2s;
+}
+.project-card:hover .project-arrow { background: var(--indigo); border-color: var(--indigo); color: white; }
+
+.exp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.exp-badge {
+  width: 44px; height: 44px;
+  border-radius: 8px;
+  background: var(--indigo-glow);
+  border: 1px solid rgba(99,102,241,0.3);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.exp-body h3 { font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+.exp-where { font-size: 0.78rem; color: var(--indigo-lt); font-weight: 500; margin-bottom: 10px; }
+.exp-desc { font-size: 0.84rem; color: #A0A0B8; line-height: 1.7; font-weight: 300; }
+.exp-desc strong { color: var(--white); font-weight: 600; }
+
+.events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+.event-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: border-color .2s;
+}
+.event-pill:hover { border-color: rgba(99,102,241,0.35); }
+
+.event-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); flex-shrink: 0; }
+.event-text { font-size: 0.78rem; color: #C0C0D0; font-weight: 400; line-height: 1.4; }
+
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 60px 48px 48px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.footer-left h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.8rem; letter-spacing: 0.04em; margin-bottom: 8px; }
+.footer-left p { font-size: 0.88rem; color: var(--muted); font-weight: 300; max-width: 360px; line-height: 1.7; }
+
+.footer-links { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+
+.footer-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color .2s;
+}
+.footer-link:hover { color: var(--indigo-lt); }
+
+.footer-link span {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  background: var(--tag-bg);
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.footer-copy {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 100px 20px 60px; }
+  section { padding: 60px 20px; }
+  .about-grid, .skills-grid, .events-grid { grid-template-columns: 1fr; }
+  .project-card { grid-template-columns: 1fr; }
+  .project-card-right { flex-direction: row; }
+  footer { padding: 40px 20px 32px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+  .footer-links { align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav>
+  <a class="nav-logo" href="#">AHY</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-label">Game Designer &amp; Developer · Istanbul</div>
+  <h1>AHMET HARUN<br><em>Yalçındağ</em></h1>
+  <p class="hero-sub">
+    I design mechanics, write GDDs, and ship games. 4 titles across PC &amp; mobile, currently building a physics-based multiplayer party game. Final year at Istanbul Topkapı University — available for summer internship 2026.
+  </p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">View Projects</a>
+    <a href="mailto:hrn.ylc.7007@gmail.com" class="btn-ghost">Get in touch →</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-num">01</span>
+    <h2 class="section-title">About</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a <strong>final-year Digital Game Design student</strong> at Istanbul Topkapı University who builds games end to end — from mechanic concept and GDD to Unity implementation and mobile release.</p>
+      <p>My work lives at the intersection of systems thinking and player experience. I've shipped titles solo and as part of cross-functional teams under game jam pressure, and I led the university board game club for three years — running structured playtesting sessions that sharpened my eye for what makes a loop feel good.</p>
+      <p>I integrate AI tools as a <strong>production accelerator</strong> — enabling rapid prototyping and smaller teams to punch above their weight in scope and polish.</p>
+    </div>
+    <div class="about-stats reveal">
+      <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Shipped Titles</div></div>
+      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Game Jams</div></div>
+      <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Years Club President</div></div>
+      <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label">Team Projects</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="padding-top:0">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Skills</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-card-icon">🎮</div>
+      <h3>Game Design</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Mechanic Design</span>
+        <span class="skill-tag">GDD Writing</span>
+        <span class="skill-tag">Level Design</span>
+        <span class="skill-tag">Gameplay Systems</span>
+        <span class="skill-tag">Playtesting</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-card-icon">⚙️</div>
+      <h3>Engine &amp; Code</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Unity</span>
+        <span class="skill-tag">C#</span>
+        <span class="skill-tag">Netcode / Multiplayer</span>
+        <span class="skill-tag dim">Unreal</span>
+        <span class="skill-tag dim">HTML / CSS</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-card-icon">🚀</div>
+      <h3>Production</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Mobile Dev</span>
+        <span class="skill-tag">Perf. Optimization</span>
+        <span class="skill-tag">Rapid Prototyping</span>
+        <span class="skill-tag dim">AI-Assisted Pipeline</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="padding-top:0">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Projects</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-list">
+
+    <!-- Butik Moving — WIP, öne alındı -->
+    <div class="project-card wip-card reveal">
+      <div class="wip-badge">In Development</div>
+      <div class="project-card-left">
+        <div class="project-card-header">
+          <span class="project-card-title">Butik Moving</span>
+        </div>
+        <div class="project-card-tags">
+          <span class="ptag ptag-engine">Unity</span>
+          <span class="ptag ptag-tech">Physics Simulation</span>
+          <span class="ptag ptag-tech">Procedural Animation</span>
+          <span class="ptag ptag-tech">Multiplayer</span>
+          <span class="ptag ptag-type">Party Game</span>
+        </div>
+        <p class="project-card-desc">
+          <strong>Designing and building a physics-based multiplayer party game</strong> with procedural arm animation and ragdoll-style character control. Built a custom rigidbody movement system to support chaotic cooperative mechanics. Integrated <strong>Unity Netcode</strong> for real-time multiplayer state synchronization. Most technically complex project to date — covers physics simulation, procedural animation, and networked gameplay simultaneously.
+        </p>
+        <p class="project-card-meta">Role: Lead Designer &amp; Developer · Solo / Small Team · Active Development</p>
+      </div>
+      <div class="project-card-right">
+        <div class="project-card-team">
+          <div class="team-num">WIP</div>
+          <div class="team-label">Active</div>
+        </div>
+        <div class="project-arrow" style="opacity:0.3">—</div>
+      </div>
+    </div>
+
+    <a class="project-card reveal" href="https://dazaiwon.itch.io/at-the-last-breath" target="_blank">
+      <div class="project-card-left">
+        <div class="project-card-header"><span class="project-card-title">After the Last Breath</span></div>
+        <div class="project-card-tags">
+          <span class="ptag ptag-engine">Unity</span>
+          <span class="ptag ptag-platform">PC / Windows</span>
+          <span class="ptag ptag-type">Narrative · Atmospheric</span>
+        </div>
+        <p class="project-card-desc">
+          <strong>Designed the full environmental narrative loop</strong> — a system where interacting with in-world objects progressively reveals backstory without dialogue. Led GDD authoring, C# event scripting, and coordinated an AI-assisted asset pipeline for graphics and audio, enabling a 3-person team to ship a content-rich experience.
+        </p>
+        <p class="project-card-meta">Role: Lead Designer &amp; Developer · 3-person team</p>
+      </div>
+      <div class="project-card-right">
+        <div class="project-card-team"><div class="team-num">3</div><div class="team-label">Person Team</div></div>
+        <div class="project-arrow">↗</div>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="https://furkanbalci.itch.io/blattodea" target="_blank">
+      <div class="project-card-left">
+        <div class="project-card-header"><span class="project-card-title">Blattodea</span></div>
+        <div class="project-card-tags">
+          <span class="ptag ptag-engine">Unity</span>
+          <span class="ptag ptag-platform">PC + Mobile</span>
+          <span class="ptag ptag-type">Point &amp; Click · Puzzle</span>
+        </div>
+        <p class="project-card-desc">
+          <strong>Designed the core memory-object interaction mechanic</strong> — each environmental object unlocks a fragmented memory sequence creating a non-linear puzzle structure. Handled the mobile port: resolved touch input conflicts and achieved <strong>stable 60fps on mid-range Android</strong>. Collaborated on level layout and pacing across 5 puzzle rooms.
+        </p>
+        <p class="project-card-meta">Role: Game Designer &amp; Developer · 4-person team</p>
+      </div>
+      <div class="project-card-right">
+        <div class="project-card-team"><div class="team-num">4</div><div class="team-label">Person Team</div></div>
+        <div class="project-arrow">↗</div>
+      </div>
+    </a>
+
+    <a class="project-card reveal" href="https://dazaiwon.itch.io/bubbleblitz-dm" target="_blank">
+      <div class="project-card-left">
+        <div class="project-card-header"><span class="project-card-title">BubbleBlitz DM</span></div>
+        <div class="project-card-tags">
+          <span class="ptag ptag-engine">Unity</span>
+          <span class="ptag ptag-platform">Mobile / APK</span>
+          <span class="ptag ptag-type">Casual · Solo</span>
+        </div>
+        <p class="project-card-desc">
+          <strong>Sole designer and developer — concept to APK in 7 days.</strong> Designed the level progression curve and difficulty balancing, integrated a music player as a differentiating feature, and shipped the full release independently. Demonstrated the ability to drive a product from idea to launch without external oversight.
+        </p>
+        <p class="project-card-meta">Role: Solo Developer · 7-day dev cycle</p>
+      </div>
+      <div class="project-card-right">
+        <div class="project-card-team"><div class="team-num">1</div><div class="team-label">Solo</div></div>
+        <div class="project-arrow">↗</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="padding-top:0">
+  <div class="section-header reveal">
+    <span class="section-num">04</span>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="exp-card reveal" style="margin-bottom:16px">
+    <div class="exp-badge">♟</div>
+    <div class="exp-body">
+      <h3>Board Game Club — President</h3>
+      <div class="exp-where">Istanbul Topkapı University · 2022 – 2025</div>
+      <p class="exp-desc">Ran weekly sessions for <strong>30+ members</strong>, organized 6 campus events, and built a curriculum around game systems analysis and player psychology. Facilitated structured playtesting of <strong>50+ titles</strong> — sharpened my ability to identify what makes a mechanic engaging, directly feeding into my design process.</p>
+    </div>
+  </div>
+
+  <div class="section-header reveal" style="margin-top:40px">
+    <span class="section-num">05</span>
+    <h2 class="section-title">Events &amp; Industry</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="events-grid">
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">ITU Save The Jam — Game Jam Participant</div></div>
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">ITU Ruin The Jam — Game Jam Participant</div></div>
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">GameZone Talks — Industry Event</div></div>
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">OGEM Talks — Career &amp; Industry Panel</div></div>
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">Mobidictum — Career In Games Conference</div></div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <h2>Let's Talk.</h2>
+      <p>Looking for a summer internship where I can contribute from day one. Reach out via email or find me on the platforms below.</p>
+    </div>
+    <div class="footer-links">
+      <a href="mailto:hrn.ylc.7007@gmail.com" class="footer-link">
+        <span>Email</span> hrn.ylc.7007@gmail.com
+      </a>
+      <a href="https://dazaiwon.itch.io" class="footer-link" target="_blank">
+        <span>itch.io</span> dazaiwon.itch.io
+      </a>
+      <a href="https://www.linkedin.com/in/ahmet-harun-yalçındağ-5b822b1b5/" class="footer-link" target="_blank">
+        <span>LinkedIn</span> Ahmet Harun Yalçındağ
+      </a>
+      <a href="https://github.com/harunylc" class="footer-link" target="_blank">
+        <span>GitHub</span> github.com/harunylc
+      </a>
+    </div>
+  </div>
+  <div class="footer-copy">
+    <span>© 2026 Ahmet Harun Yalçındağ</span>
+    <span>Game Designer &amp; Developer · Istanbul</span>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.style.transitionDelay = `${(i % 4) * 0.08}s`;
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
