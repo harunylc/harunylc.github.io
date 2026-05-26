@@ -33,6 +33,11 @@ body {
   overflow-x: hidden;
 }
 
+/* ── LANG VISIBILITY ── */
+[data-lang="tr"] { display: none; }
+body.lang-tr [data-lang="en"] { display: none; }
+body.lang-tr [data-lang="tr"] { display: revert; }
+
 body::before {
   content: '';
   position: fixed;
@@ -75,6 +80,12 @@ nav {
   text-decoration: none;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
 .nav-links { display: flex; gap: 28px; list-style: none; }
 .nav-links a {
   color: var(--muted);
@@ -85,6 +96,40 @@ nav {
   transition: color .2s;
 }
 .nav-links a:hover { color: var(--white); }
+
+/* ── LANG TOGGLE ── */
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px;
+}
+
+.lang-switch button {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all .18s;
+  background: transparent;
+  color: var(--muted);
+}
+
+.lang-switch button.active {
+  background: var(--indigo);
+  color: white;
+}
+
+.lang-switch button:not(.active):hover {
+  color: var(--white);
+}
 
 .hero {
   position: relative;
@@ -513,28 +558,45 @@ footer {
 
 <nav>
   <a class="nav-logo" href="#">AHY</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#about"><span data-lang="en">About</span><span data-lang="tr">Hakkımda</span></a></li>
+      <li><a href="#projects"><span data-lang="en">Projects</span><span data-lang="tr">Projeler</span></a></li>
+      <li><a href="#experience"><span data-lang="en">Experience</span><span data-lang="tr">Deneyim</span></a></li>
+      <li><a href="#contact"><span data-lang="en">Contact</span><span data-lang="tr">İletişim</span></a></li>
+    </ul>
+    <div class="lang-switch">
+      <button class="active" id="btn-en" onclick="setLang('en')">EN</button>
+      <button id="btn-tr" onclick="setLang('tr')">TR</button>
+    </div>
+  </div>
 </nav>
 
 <div class="hero">
   <div class="hero-glow"></div>
-  <div class="hero-label">Game Designer &amp; Developer · Istanbul</div>
+  <div class="hero-label">
+    <span data-lang="en">Game Designer &amp; Developer · Istanbul</span>
+    <span data-lang="tr">Oyun Tasarımcısı &amp; Geliştirici · İstanbul</span>
+  </div>
   <h1>AHMET HARUN<br><em>Yalçındağ</em></h1>
   <p class="hero-sub">
-    I design mechanics, write GDDs, and ship games. 4 titles across PC &amp; mobile, currently building a physics-based multiplayer party game. Final year at Istanbul Topkapı University — available for summer internship 2026.
+    <span data-lang="en">I design mechanics, write GDDs, and ship games. 4 titles across PC &amp; mobile, currently building a physics-based multiplayer party game. Final year at Istanbul Topkapı University — available for summer internship 2026.</span>
+    <span data-lang="tr">Mekanik tasarlıyor, GDD yazıyor ve oyun yayımlıyorum. PC ve mobilde 4 oyun — şu an fizik tabanlı çok oyunculu bir party oyunu geliştiriyorum. İstanbul Topkapı Üniversitesi son sınıf öğrencisi, 2026 yaz stajına hazırım.</span>
   </p>
   <div class="hero-cta">
-    <a href="#projects" class="btn-primary">View Projects</a>
-    <a href="mailto:hrn.ylc.7007@gmail.com" class="btn-ghost">Get in touch →</a>
+    <a href="#projects" class="btn-primary">
+      <span data-lang="en">View Projects</span>
+      <span data-lang="tr">Projeleri Gör</span>
+    </a>
+    <a href="mailto:hrn.ylc.7007@gmail.com" class="btn-ghost">
+      <span data-lang="en">Get in touch →</span>
+      <span data-lang="tr">İletişime geç →</span>
+    </a>
   </div>
   <div class="hero-scroll">
     <div class="scroll-line"></div>
-    Scroll
+    <span data-lang="en">Scroll</span>
+    <span data-lang="tr">Kaydır</span>
   </div>
 </div>
 
@@ -542,20 +604,56 @@ footer {
 <section id="about">
   <div class="section-header reveal">
     <span class="section-num">01</span>
-    <h2 class="section-title">About</h2>
+    <h2 class="section-title">
+      <span data-lang="en">About</span>
+      <span data-lang="tr">Hakkımda</span>
+    </h2>
     <div class="section-line"></div>
   </div>
   <div class="about-grid">
     <div class="about-text reveal">
-      <p>I'm a <strong>final-year Digital Game Design student</strong> at Istanbul Topkapı University who builds games end to end — from mechanic concept and GDD to Unity implementation and mobile release.</p>
-      <p>My work lives at the intersection of systems thinking and player experience. I've shipped titles solo and as part of cross-functional teams under game jam pressure, and I led the university board game club for three years — running structured playtesting sessions that sharpened my eye for what makes a loop feel good.</p>
-      <p>I integrate AI tools as a <strong>production accelerator</strong> — enabling rapid prototyping and smaller teams to punch above their weight in scope and polish.</p>
+      <p>
+        <span data-lang="en">I'm a <strong>final-year Digital Game Design student</strong> at Istanbul Topkapı University who builds games end to end — from mechanic concept and GDD to Unity implementation and mobile release.</span>
+        <span data-lang="tr"><strong>İstanbul Topkapı Üniversitesi Dijital Oyun Tasarımı</strong> son sınıf öğrencisiyim. Mekanik konseptinden GDD'ye, Unity geliştirmesinden mobil yayına kadar oyunları baştan sona inşa ediyorum.</span>
+      </p>
+      <p>
+        <span data-lang="en">My work lives at the intersection of systems thinking and player experience. I've shipped titles solo and as part of cross-functional teams under game jam pressure, and I led the university board game club for three years — running structured playtesting sessions that sharpened my eye for what makes a loop feel good.</span>
+        <span data-lang="tr">Çalışmalarım sistem düşüncesi ile oyuncu deneyiminin kesişiminde yer alıyor. Hem solo hem de game jam baskısı altında farklı disiplinlerden ekiplerle birlikte oyunlar yayımladım. Üç yıl boyunca üniversitenin masa oyunları kulübüne başkanlık yaptım; yapılandırılmış oyun testi oturumları yürüttüm ve bir döngüyü keyifli kılanı kavrama yetimi geliştirdim.</span>
+      </p>
+      <p>
+        <span data-lang="en">I integrate AI tools as a <strong>production accelerator</strong> — enabling rapid prototyping and smaller teams to punch above their weight in scope and polish.</span>
+        <span data-lang="tr">Yapay zeka araçlarını bir <strong>üretim hızlandırıcı</strong> olarak entegre ediyorum — bu sayede hızlı prototipleme yapıyor ve küçük ekiplerin kapsam ve cilada büyüklerin üzerinde oynamasını sağlıyorum.</span>
+      </p>
     </div>
     <div class="about-stats reveal">
-      <div class="stat-card"><div class="stat-num">4</div><div class="stat-label">Shipped Titles</div></div>
-      <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Game Jams</div></div>
-      <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Years Club President</div></div>
-      <div class="stat-card"><div class="stat-num">5+</div><div class="stat-label">Team Projects</div></div>
+      <div class="stat-card">
+        <div class="stat-num">4</div>
+        <div class="stat-label">
+          <span data-lang="en">Shipped Titles</span>
+          <span data-lang="tr">Yayımlanan Oyun</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2</div>
+        <div class="stat-label">
+          <span data-lang="en">Game Jams</span>
+          <span data-lang="tr">Game Jam</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3</div>
+        <div class="stat-label">
+          <span data-lang="en">Years Club President</span>
+          <span data-lang="tr">Yıl Kulüp Başkanı</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5+</div>
+        <div class="stat-label">
+          <span data-lang="en">Team Projects</span>
+          <span data-lang="tr">Ekip Projesi</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -564,40 +662,52 @@ footer {
 <section id="skills" style="padding-top:0">
   <div class="section-header reveal">
     <span class="section-num">02</span>
-    <h2 class="section-title">Skills</h2>
+    <h2 class="section-title">
+      <span data-lang="en">Skills</span>
+      <span data-lang="tr">Beceriler</span>
+    </h2>
     <div class="section-line"></div>
   </div>
   <div class="skills-grid">
     <div class="skill-card reveal">
       <div class="skill-card-icon">🎮</div>
-      <h3>Game Design</h3>
+      <h3>
+        <span data-lang="en">Game Design</span>
+        <span data-lang="tr">Oyun Tasarımı</span>
+      </h3>
       <div class="skill-tags">
-        <span class="skill-tag">Mechanic Design</span>
-        <span class="skill-tag">GDD Writing</span>
-        <span class="skill-tag">Level Design</span>
-        <span class="skill-tag">Gameplay Systems</span>
-        <span class="skill-tag">Playtesting</span>
+        <span class="skill-tag"><span data-lang="en">Mechanic Design</span><span data-lang="tr">Mekanik Tasarım</span></span>
+        <span class="skill-tag"><span data-lang="en">GDD Writing</span><span data-lang="tr">GDD Yazımı</span></span>
+        <span class="skill-tag"><span data-lang="en">Level Design</span><span data-lang="tr">Seviye Tasarımı</span></span>
+        <span class="skill-tag"><span data-lang="en">Gameplay Systems</span><span data-lang="tr">Oynanış Sistemleri</span></span>
+        <span class="skill-tag"><span data-lang="en">Playtesting</span><span data-lang="tr">Oyun Testi</span></span>
       </div>
     </div>
     <div class="skill-card reveal">
       <div class="skill-card-icon">⚙️</div>
-      <h3>Engine &amp; Code</h3>
+      <h3>
+        <span data-lang="en">Engine &amp; Code</span>
+        <span data-lang="tr">Motor &amp; Kod</span>
+      </h3>
       <div class="skill-tags">
         <span class="skill-tag">Unity</span>
         <span class="skill-tag">C#</span>
-        <span class="skill-tag">Netcode / Multiplayer</span>
+        <span class="skill-tag"><span data-lang="en">Netcode / Multiplayer</span><span data-lang="tr">Netcode / Çok Oyunculu</span></span>
         <span class="skill-tag dim">Unreal</span>
         <span class="skill-tag dim">HTML / CSS</span>
       </div>
     </div>
     <div class="skill-card reveal">
       <div class="skill-card-icon">🚀</div>
-      <h3>Production</h3>
+      <h3>
+        <span data-lang="en">Production</span>
+        <span data-lang="tr">Üretim</span>
+      </h3>
       <div class="skill-tags">
-        <span class="skill-tag">Mobile Dev</span>
-        <span class="skill-tag">Perf. Optimization</span>
-        <span class="skill-tag">Rapid Prototyping</span>
-        <span class="skill-tag dim">AI-Assisted Pipeline</span>
+        <span class="skill-tag"><span data-lang="en">Mobile Dev</span><span data-lang="tr">Mobil Geliştirme</span></span>
+        <span class="skill-tag"><span data-lang="en">Perf. Optimization</span><span data-lang="tr">Performans Optimizasyonu</span></span>
+        <span class="skill-tag"><span data-lang="en">Rapid Prototyping</span><span data-lang="tr">Hızlı Prototipleme</span></span>
+        <span class="skill-tag dim"><span data-lang="en">AI-Assisted Pipeline</span><span data-lang="tr">AI Destekli Pipeline</span></span>
       </div>
     </div>
   </div>
@@ -607,54 +717,34 @@ footer {
 <section id="projects" style="padding-top:0">
   <div class="section-header reveal">
     <span class="section-num">03</span>
-    <h2 class="section-title">Projects</h2>
+    <h2 class="section-title">
+      <span data-lang="en">Projects</span>
+      <span data-lang="tr">Projeler</span>
+    </h2>
     <div class="section-line"></div>
   </div>
   <div class="projects-list">
 
-    <!-- Butik Moving — WIP, öne alındı -->
-    <div class="project-card wip-card reveal">
-      <div class="wip-badge">In Development</div>
+    <!-- BubbleBlitz — mobile-first, UDO için öne alındı -->
+    <a class="project-card reveal" href="https://dazaiwon.itch.io/bubbleblitz-dm" target="_blank">
       <div class="project-card-left">
-        <div class="project-card-header">
-          <span class="project-card-title">Butik Moving</span>
-        </div>
+        <div class="project-card-header"><span class="project-card-title">BubbleBlitz DM</span></div>
         <div class="project-card-tags">
           <span class="ptag ptag-engine">Unity</span>
-          <span class="ptag ptag-tech">Physics Simulation</span>
-          <span class="ptag ptag-tech">Procedural Animation</span>
-          <span class="ptag ptag-tech">Multiplayer</span>
-          <span class="ptag ptag-type">Party Game</span>
+          <span class="ptag ptag-platform">Mobile / APK</span>
+          <span class="ptag ptag-type"><span data-lang="en">Casual · Solo</span><span data-lang="tr">Casual · Solo</span></span>
         </div>
         <p class="project-card-desc">
-          <strong>Designing and building a physics-based multiplayer party game</strong> with procedural arm animation and ragdoll-style character control. Built a custom rigidbody movement system to support chaotic cooperative mechanics. Integrated <strong>Unity Netcode</strong> for real-time multiplayer state synchronization. Most technically complex project to date — covers physics simulation, procedural animation, and networked gameplay simultaneously.
+          <span data-lang="en"><strong>Sole designer and developer — concept to APK in 7 days.</strong> Designed the level progression curve and difficulty balancing, integrated a music player as a differentiating feature, and shipped the full release independently. Demonstrated the ability to drive a mobile product from idea to launch without external oversight.</span>
+          <span data-lang="tr"><strong>Tek başıma tasarladım ve geliştirdim — konseptten APK'ya 7 günde.</strong> Seviye ilerleme eğrisini ve zorluk dengesini tasarladım, farklılaştırıcı bir özellik olarak müzik çalar entegre ettim ve ürünü bağımsız olarak yayımladım. Mobil bir ürünü fikir aşamasından piyasaya çıkışa kadar tek başıma taşıyabildiğimi kanıtladım.</span>
         </p>
-        <p class="project-card-meta">Role: Lead Designer &amp; Developer · Solo / Small Team · Active Development</p>
+        <p class="project-card-meta">
+          <span data-lang="en">Role: Solo Developer · 7-day dev cycle</span>
+          <span data-lang="tr">Rol: Solo Geliştirici · 7 günlük geliştirme süreci</span>
+        </p>
       </div>
       <div class="project-card-right">
-        <div class="project-card-team">
-          <div class="team-num">WIP</div>
-          <div class="team-label">Active</div>
-        </div>
-        <div class="project-arrow" style="opacity:0.3">—</div>
-      </div>
-    </div>
-
-    <a class="project-card reveal" href="https://dazaiwon.itch.io/at-the-last-breath" target="_blank">
-      <div class="project-card-left">
-        <div class="project-card-header"><span class="project-card-title">After the Last Breath</span></div>
-        <div class="project-card-tags">
-          <span class="ptag ptag-engine">Unity</span>
-          <span class="ptag ptag-platform">PC / Windows</span>
-          <span class="ptag ptag-type">Narrative · Atmospheric</span>
-        </div>
-        <p class="project-card-desc">
-          <strong>Designed the full environmental narrative loop</strong> — a system where interacting with in-world objects progressively reveals backstory without dialogue. Led GDD authoring, C# event scripting, and coordinated an AI-assisted asset pipeline for graphics and audio, enabling a 3-person team to ship a content-rich experience.
-        </p>
-        <p class="project-card-meta">Role: Lead Designer &amp; Developer · 3-person team</p>
-      </div>
-      <div class="project-card-right">
-        <div class="project-card-team"><div class="team-num">3</div><div class="team-label">Person Team</div></div>
+        <div class="project-card-team"><div class="team-num">1</div><div class="team-label">Solo</div></div>
         <div class="project-arrow">↗</div>
       </div>
     </a>
@@ -665,37 +755,78 @@ footer {
         <div class="project-card-tags">
           <span class="ptag ptag-engine">Unity</span>
           <span class="ptag ptag-platform">PC + Mobile</span>
-          <span class="ptag ptag-type">Point &amp; Click · Puzzle</span>
+          <span class="ptag ptag-type"><span data-lang="en">Point &amp; Click · Puzzle</span><span data-lang="tr">Tıkla ve Oyna · Bulmaca</span></span>
         </div>
         <p class="project-card-desc">
-          <strong>Designed the core memory-object interaction mechanic</strong> — each environmental object unlocks a fragmented memory sequence creating a non-linear puzzle structure. Handled the mobile port: resolved touch input conflicts and achieved <strong>stable 60fps on mid-range Android</strong>. Collaborated on level layout and pacing across 5 puzzle rooms.
+          <span data-lang="en"><strong>Designed the core memory-object interaction mechanic</strong> — each environmental object unlocks a fragmented memory sequence creating a non-linear puzzle structure. Handled the mobile port: resolved touch input conflicts and achieved <strong>stable 60fps on mid-range Android</strong>. Collaborated on level layout and pacing across 5 puzzle rooms.</span>
+          <span data-lang="tr"><strong>Temel bellek-nesne etkileşim mekaniğini tasarladım</strong> — her çevresel nesne parçalı bir anı dizisinin kilidini açıyor ve doğrusal olmayan bir bulmaca yapısı oluşturuyor. Mobil port: dokunmatik girdi çakışmalarını çözdüm ve orta segmentte Android cihazlarda <strong>sabit 60fps</strong> elde ettim. 5 bulmaca odasında seviye düzeni ve akışına katkıda bulundum.</span>
         </p>
-        <p class="project-card-meta">Role: Game Designer &amp; Developer · 4-person team</p>
+        <p class="project-card-meta">
+          <span data-lang="en">Role: Game Designer &amp; Developer · 4-person team</span>
+          <span data-lang="tr">Rol: Oyun Tasarımcısı &amp; Geliştirici · 4 kişilik ekip</span>
+        </p>
       </div>
       <div class="project-card-right">
-        <div class="project-card-team"><div class="team-num">4</div><div class="team-label">Person Team</div></div>
+        <div class="project-card-team"><div class="team-num">4</div><div class="team-label"><span data-lang="en">Person Team</span><span data-lang="tr">Kişilik Ekip</span></div></div>
         <div class="project-arrow">↗</div>
       </div>
     </a>
 
-    <a class="project-card reveal" href="https://dazaiwon.itch.io/bubbleblitz-dm" target="_blank">
+    <a class="project-card reveal" href="https://dazaiwon.itch.io/at-the-last-breath" target="_blank">
       <div class="project-card-left">
-        <div class="project-card-header"><span class="project-card-title">BubbleBlitz DM</span></div>
+        <div class="project-card-header"><span class="project-card-title">After the Last Breath</span></div>
         <div class="project-card-tags">
           <span class="ptag ptag-engine">Unity</span>
-          <span class="ptag ptag-platform">Mobile / APK</span>
-          <span class="ptag ptag-type">Casual · Solo</span>
+          <span class="ptag ptag-platform">PC / Windows</span>
+          <span class="ptag ptag-type"><span data-lang="en">Narrative · Atmospheric</span><span data-lang="tr">Anlatı · Atmosferik</span></span>
         </div>
         <p class="project-card-desc">
-          <strong>Sole designer and developer — concept to APK in 7 days.</strong> Designed the level progression curve and difficulty balancing, integrated a music player as a differentiating feature, and shipped the full release independently. Demonstrated the ability to drive a product from idea to launch without external oversight.
+          <span data-lang="en"><strong>Designed the full environmental narrative loop</strong> — a system where interacting with in-world objects progressively reveals backstory without dialogue. Led GDD authoring, C# event scripting, and coordinated an AI-assisted asset pipeline for graphics and audio, enabling a 3-person team to ship a content-rich experience.</span>
+          <span data-lang="tr"><strong>Çevresel anlatı döngüsünün tamamını tasarladım</strong> — oyun dünyasındaki nesnelerle etkileşim kurarak diyalogsuz şekilde arka planı açan bir sistem. GDD yazımını, C# olay kodlamasını yönettim ve grafik ile ses için AI destekli asset pipeline'ı koordine ettim; 3 kişilik ekibin zengin içerikli bir deneyim sunmasını sağladım.</span>
         </p>
-        <p class="project-card-meta">Role: Solo Developer · 7-day dev cycle</p>
+        <p class="project-card-meta">
+          <span data-lang="en">Role: Lead Designer &amp; Developer · 3-person team</span>
+          <span data-lang="tr">Rol: Baş Tasarımcı &amp; Geliştirici · 3 kişilik ekip</span>
+        </p>
       </div>
       <div class="project-card-right">
-        <div class="project-card-team"><div class="team-num">1</div><div class="team-label">Solo</div></div>
+        <div class="project-card-team"><div class="team-num">3</div><div class="team-label"><span data-lang="en">Person Team</span><span data-lang="tr">Kişilik Ekip</span></div></div>
         <div class="project-arrow">↗</div>
       </div>
     </a>
+
+    <!-- Butik Moving — WIP -->
+    <div class="project-card wip-card reveal">
+      <div class="wip-badge">
+        <span data-lang="en">In Development</span>
+        <span data-lang="tr">Geliştiriliyor</span>
+      </div>
+      <div class="project-card-left">
+        <div class="project-card-header"><span class="project-card-title">Butik Moving</span></div>
+        <div class="project-card-tags">
+          <span class="ptag ptag-engine">Unity</span>
+          <span class="ptag ptag-tech"><span data-lang="en">Physics Simulation</span><span data-lang="tr">Fizik Simülasyonu</span></span>
+          <span class="ptag ptag-tech"><span data-lang="en">Procedural Animation</span><span data-lang="tr">Prosedürel Animasyon</span></span>
+          <span class="ptag ptag-tech">Multiplayer</span>
+          <span class="ptag ptag-type"><span data-lang="en">Party Game</span><span data-lang="tr">Party Oyunu</span></span>
+        </div>
+        <p class="project-card-desc">
+          <span data-lang="en"><strong>Designing and building a physics-based multiplayer party game</strong> with procedural arm animation and ragdoll-style character control. Built a custom rigidbody movement system to support chaotic cooperative mechanics. Integrated <strong>Unity Netcode</strong> for real-time multiplayer state synchronization.</span>
+          <span data-lang="tr"><strong>Fizik tabanlı çok oyunculu bir party oyunu tasarlıyor ve geliştiriyorum</strong> — prosedürel kol animasyonu ve ragdoll tarzı karakter kontrolü içeriyor. Kaotik kooperatif mekanikleri desteklemek için özel bir rigidbody hareket sistemi kurdum. Gerçek zamanlı çok oyunculu durum senkronizasyonu için <strong>Unity Netcode</strong> entegre ettim.</span>
+        </p>
+        <p class="project-card-meta">
+          <span data-lang="en">Role: Lead Designer &amp; Developer · Active Development</span>
+          <span data-lang="tr">Rol: Baş Tasarımcı &amp; Geliştirici · Aktif Geliştirme</span>
+        </p>
+      </div>
+      <div class="project-card-right">
+        <div class="project-card-team">
+          <div class="team-num">WIP</div>
+          <div class="team-label"><span data-lang="en">Active</span><span data-lang="tr">Aktif</span></div>
+        </div>
+        <div class="project-arrow" style="opacity:0.3">—</div>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -704,37 +835,55 @@ footer {
 <section id="experience" style="padding-top:0">
   <div class="section-header reveal">
     <span class="section-num">04</span>
-    <h2 class="section-title">Experience</h2>
+    <h2 class="section-title">
+      <span data-lang="en">Experience</span>
+      <span data-lang="tr">Deneyim</span>
+    </h2>
     <div class="section-line"></div>
   </div>
   <div class="exp-card reveal" style="margin-bottom:16px">
     <div class="exp-badge">♟</div>
     <div class="exp-body">
-      <h3>Board Game Club — President</h3>
+      <h3>
+        <span data-lang="en">Board Game Club — President</span>
+        <span data-lang="tr">Masa Oyunları Kulübü — Başkan</span>
+      </h3>
       <div class="exp-where">Istanbul Topkapı University · 2022 – 2025</div>
-      <p class="exp-desc">Ran weekly sessions for <strong>30+ members</strong>, organized 6 campus events, and built a curriculum around game systems analysis and player psychology. Facilitated structured playtesting of <strong>50+ titles</strong> — sharpened my ability to identify what makes a mechanic engaging, directly feeding into my design process.</p>
+      <p class="exp-desc">
+        <span data-lang="en">Ran weekly sessions for <strong>30+ members</strong>, organized 6 campus events, and built a curriculum around game systems analysis and player psychology. Facilitated structured playtesting of <strong>50+ titles</strong> — sharpened my ability to identify what makes a mechanic engaging, directly feeding into my design process.</span>
+        <span data-lang="tr"><strong>30'dan fazla üye</strong> için haftalık oturumlar düzenledim, 6 kampüs etkinliği organize ettim, oyun sistemleri analizi ve oyuncu psikolojisi üzerine bir müfredat oluşturdum. <strong>50'yi aşkın oyunun</strong> yapılandırılmış oyun testini kolaylaştırdım — bir mekaniği ilgi çekici kılanı belirleme yetimi geliştirdi ve tasarım sürecimi doğrudan besledi.</span>
+      </p>
     </div>
   </div>
 
   <div class="section-header reveal" style="margin-top:40px">
     <span class="section-num">05</span>
-    <h2 class="section-title">Events &amp; Industry</h2>
+    <h2 class="section-title">
+      <span data-lang="en">Events &amp; Industry</span>
+      <span data-lang="tr">Etkinlikler &amp; Sektör</span>
+    </h2>
     <div class="section-line"></div>
   </div>
   <div class="events-grid">
-    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">ITU Save The Jam — Game Jam Participant</div></div>
-    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">ITU Ruin The Jam — Game Jam Participant</div></div>
-    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">GameZone Talks — Industry Event</div></div>
-    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">OGEM Talks — Career &amp; Industry Panel</div></div>
-    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">Mobidictum — Career In Games Conference</div></div>
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">ITU Save The Jam — <span data-lang="en">Game Jam Participant</span><span data-lang="tr">Game Jam Katılımcısı</span></div></div>
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">ITU Ruin The Jam — <span data-lang="en">Game Jam Participant</span><span data-lang="tr">Game Jam Katılımcısı</span></div></div>
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">GameZone Talks — <span data-lang="en">Industry Event</span><span data-lang="tr">Sektör Etkinliği</span></div></div>
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">OGEM Talks — <span data-lang="en">Career &amp; Industry Panel</span><span data-lang="tr">Kariyer &amp; Sektör Paneli</span></div></div>
+    <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">Mobidictum — <span data-lang="en">Career In Games Conference</span><span data-lang="tr">Career In Games Konferansı</span></div></div>
   </div>
 </section>
 
 <footer id="contact">
   <div class="footer-inner">
     <div class="footer-left">
-      <h2>Let's Talk.</h2>
-      <p>Looking for a summer internship where I can contribute from day one. Reach out via email or find me on the platforms below.</p>
+      <h2>
+        <span data-lang="en">Let's Talk.</span>
+        <span data-lang="tr">Konuşalım.</span>
+      </h2>
+      <p>
+        <span data-lang="en">Looking for a summer internship where I can contribute from day one. Reach out via email or find me on the platforms below.</span>
+        <span data-lang="tr">İlk günden katkı sağlayabileceğim bir yaz stajı arıyorum. E-posta yoluyla ulaşabilir veya aşağıdaki platformlarda beni bulabilirsiniz.</span>
+      </p>
     </div>
     <div class="footer-links">
       <a href="mailto:hrn.ylc.7007@gmail.com" class="footer-link">
@@ -753,11 +902,20 @@ footer {
   </div>
   <div class="footer-copy">
     <span>© 2026 Ahmet Harun Yalçındağ</span>
-    <span>Game Designer &amp; Developer · Istanbul</span>
+    <span>
+      <span data-lang="en">Game Designer &amp; Developer · Istanbul</span>
+      <span data-lang="tr">Oyun Tasarımcısı &amp; Geliştirici · İstanbul</span>
+    </span>
   </div>
 </footer>
 
 <script>
+function setLang(lang) {
+  document.body.classList.toggle('lang-tr', lang === 'tr');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+}
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
