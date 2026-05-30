@@ -225,6 +225,99 @@ nav {
 }
 .btn-ghost:hover { color: var(--white); }
 
+/* ── CV DOWNLOAD BUTTONS ── */
+.cv-download-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 6px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: background .2s, transform .15s, border-color .2s;
+  border: 1px solid var(--border);
+}
+
+.btn-cv-en {
+  background: rgba(99,102,241,0.12);
+  color: var(--indigo-lt);
+  border-color: rgba(99,102,241,0.3);
+}
+.btn-cv-en:hover {
+  background: rgba(99,102,241,0.22);
+  border-color: var(--indigo);
+  transform: translateY(-2px);
+}
+
+.btn-cv-tr {
+  background: rgba(255,255,255,0.04);
+  color: var(--muted);
+  border-color: var(--border);
+}
+.btn-cv-tr:hover {
+  background: rgba(255,255,255,0.08);
+  color: var(--white);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+.btn-cv svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.cv-flag {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+/* ── CV SECTION ── */
+.cv-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  transition: border-color .2s;
+}
+.cv-section:hover { border-color: rgba(99,102,241,0.3); }
+
+.cv-section-text h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.cv-section-text p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-weight: 300;
+  max-width: 420px;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .cv-section {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px 24px;
+  }
+}
+
 .hero-scroll {
   position: absolute;
   bottom: 36px; left: 48px;
@@ -564,6 +657,7 @@ footer {
       <li><a href="#projects"><span data-lang="en">Projects</span><span data-lang="tr">Projeler</span></a></li>
       <li><a href="#experience"><span data-lang="en">Experience</span><span data-lang="tr">Deneyim</span></a></li>
       <li><a href="#contact"><span data-lang="en">Contact</span><span data-lang="tr">İletişim</span></a></li>
+      <li><a href="#cv"><span data-lang="en">CV</span><span data-lang="tr">CV</span></a></li>
     </ul>
     <div class="lang-switch">
       <button class="active" id="btn-en" onclick="setLang('en')">EN</button>
@@ -592,6 +686,18 @@ footer {
       <span data-lang="en">Get in touch →</span>
       <span data-lang="tr">İletişime geç →</span>
     </a>
+    <div class="cv-download-group">
+      <a href="cv/cv-en.pdf" download class="btn-cv btn-cv-en" id="hero-cv-en">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span data-lang="en">Download CV <span class="cv-flag">🇬🇧</span></span>
+        <span data-lang="tr">CV İndir <span class="cv-flag">🇬🇧</span></span>
+      </a>
+      <a href="cv/cv-tr.pdf" download class="btn-cv btn-cv-tr" id="hero-cv-tr">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span data-lang="en">CV (TR) <span class="cv-flag">🇹🇷</span></span>
+        <span data-lang="tr">CV İndir <span class="cv-flag">🇹🇷</span></span>
+      </a>
+    </div>
   </div>
   <div class="hero-scroll">
     <div class="scroll-line"></div>
@@ -870,6 +976,40 @@ footer {
     <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">GameZone Talks — <span data-lang="en">Industry Event</span><span data-lang="tr">Sektör Etkinliği</span></div></div>
     <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">OGEM Talks — <span data-lang="en">Career &amp; Industry Panel</span><span data-lang="tr">Kariyer &amp; Sektör Paneli</span></div></div>
     <div class="event-pill reveal"><div class="event-dot"></div><div class="event-text">Mobidictum — <span data-lang="en">Career In Games Conference</span><span data-lang="tr">Career In Games Konferansı</span></div></div>
+  </div>
+</section>
+
+<!-- CV DOWNLOAD SECTION -->
+<section id="cv">
+  <div class="section-header reveal">
+    <span class="section-num">06</span>
+    <h2 class="section-title">
+      <span data-lang="en">Resume</span>
+      <span data-lang="tr">Özgeçmiş</span>
+    </h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="cv-section reveal">
+    <div class="cv-section-text">
+      <h3>
+        <span data-lang="en">Download My CV</span>
+        <span data-lang="tr">CV'mi İndir</span>
+      </h3>
+      <p>
+        <span data-lang="en">Available in English and Turkish. Up to date with all projects, skills, and experience.</span>
+        <span data-lang="tr">İngilizce ve Türkçe olarak mevcut. Tüm projeler, beceriler ve deneyimlerle güncel.</span>
+      </p>
+    </div>
+    <div class="cv-download-group">
+      <a href="cv/cv-en.pdf" download class="btn-cv btn-cv-en">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>CV — English 🇬🇧</span>
+      </a>
+      <a href="cv/cv-tr.pdf" download class="btn-cv btn-cv-tr">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>CV — Türkçe 🇹🇷</span>
+      </a>
+    </div>
   </div>
 </section>
 
